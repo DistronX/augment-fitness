@@ -1,6 +1,7 @@
 // userController.js
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const jwtSecret = "your-secret-key"; // Replace with your own secret key
 
@@ -18,7 +19,15 @@ const userController = {
           .json({ error: "User with this email already exists" });
       }
 
-      const newUser = new User({ name, email, password, phone_number });
+      const hashPassword = await bcrypt.hash(password, 8);
+      console.log(hashPassword);
+      const newUser = new User({
+        name,
+        email,
+        password: hashPassword,
+        phone_number,
+      });
+
       const savedUser = await newUser.save();
 
       // Generate a JWT token
@@ -40,7 +49,8 @@ const userController = {
       const user = await User.findOne({ email });
 
       // Check if the user exists and the password is correct
-      if (!user || !user.comparePassword(password)) {
+      const verifyPassword = await bcrypt.compare(password, user.password);
+      if (!user || !verifyPassword) {
         return res.status(401).json({ error: "Invalid email or password" });
       }
 
@@ -59,6 +69,7 @@ const userController = {
     try {
       // The user information is available in req.user due to the middleware
       const user = req.user;
+      console, log(user.email);
       res.json(user);
     } catch (error) {
       console.error(error);
