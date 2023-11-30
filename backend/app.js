@@ -5,7 +5,7 @@ const itemRoutes = require("./routes/itemRoutes");
 const userRoutes = require("./routes/userRoutes");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/augment_fitness", {

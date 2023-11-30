@@ -186,6 +186,10 @@ export const themeSettings = (mode) => {
             h6: {
                 fontFamily: ['Source Sans 3', 'sans-serif'].join(","),
                 fontSize: 14
+            },
+            logo: {
+                fontFamily: ['monospace'].join(","),
+                fontSize: 20
             }
         }
     }

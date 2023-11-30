@@ -8,11 +8,15 @@ import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import SearchIcon from '@mui/icons-material/Search';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import { useAuth } from '../../AuthContext';
 
 export default function Topbar() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+
+  const { logout } = useAuth()
 
   return (
     <Box display='flex' justifyContent='space-between' p={2}>
@@ -40,6 +44,9 @@ export default function Topbar() {
         </IconButton>
         <IconButton>
           <PersonOutlinedIcon />
+        </IconButton>
+        <IconButton onClick={logout}>
+          <LogoutOutlinedIcon />
         </IconButton>
       </Box>
     </Box>
