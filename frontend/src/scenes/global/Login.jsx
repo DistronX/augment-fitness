@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import { Box, IconButton, InputBase, Typography, useTheme, Button } from '@mui/material';
+import { Box, IconButton, InputBase, Typography, useTheme, Button, Alert, AlertTitle, alpha } from '@mui/material';
 import { tokens } from '../../theme';
 import { Link, useNavigate } from 'react-router-dom';
 import PersonIcon from '@mui/icons-material/Person';
-// import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import { useAuth } from '../../AuthContext';
 import Navbar from '../global/Navbar'
-// import Topbar from '../global/Topbar';
+import BackgroundVideo from '../../components/BackgroundVideo';
+
 
 export default function Login() {
     const theme = useTheme();
@@ -16,13 +16,18 @@ export default function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loginStatus, setLoginStatus] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('http://localhost:3001/login', {
+            if (email === '' || password === '') {
+                throw new Error('Email and password must be provided.')
+            }
+            const response = await fetch('http://localhost:3001/user/login', {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -35,23 +40,21 @@ export default function Login() {
 
             console.log(data)
 
-            // if (data.success) {
-            //     // If login is successful, you can redirect the user to another page
-            //     // For example, using react-router-dom history.push('/dashboard');
-            //     console.log('Login successful!');
-            // } else {
-            //     console.error('Login failed:', data.message);
-            // }
-
-            if (email === 'admin' && password === 'password') {
-                console.log('Login Successfull')
-                login('this-is-a-test-token')
+            if (response.ok) {
+                // If login is successful, you can redirect the user to another page
+                // For example, using react-router-dom history.push('/dashboard');
+                setLoginStatus('success')
+                console.log('Login successful!');
+                login(data)
                 navigate('/dashboard')
-            }
-            else {
-                alert('Incorrect email or password.')
+            } else {
+                setLoginStatus('error')
+                setErrorMessage('Incorrect email or password.');
+                console.error('Login failed:', data.message);
             }
         } catch (error) {
+            setLoginStatus('error')
+            setErrorMessage(error.message);
             console.error('Error during login:', error);
         }
     };
@@ -59,6 +62,7 @@ export default function Login() {
 
     return (
         <Box>
+            <BackgroundVideo />
             <Box position={'absolute'} width={'100%'}>
                 <Navbar />
             </Box>
@@ -69,11 +73,12 @@ export default function Login() {
                     justifyContent={'center'}
                     alignItems={'center'}
                     sx={{
-                        background: colors.primary[400],
-                        width: '500px',
-                        height: '500px'
+                        backgroundColor: alpha(colors.primary[400], 0.5),
+                        width: '480px',
+                        height: '480px',
+                        borderRadius: '10px'
                     }}
-                >   
+                >
                     <Typography variant='h1' color={colors.grey[100]} fontWeight={'bold'} mb={'30px'}>
                         Login
                     </Typography>
@@ -130,6 +135,20 @@ export default function Login() {
                     >
                         Sign In
                     </Button>
+
+                    {loginStatus === 'success' && (
+                        <Alert severity="success" onClose={() => setLoginStatus(null)} sx={{ mt: '20px' }}>
+                            <AlertTitle>Success</AlertTitle>
+                            Registration successful!
+                        </Alert>
+                    )}
+
+                    {loginStatus === 'error' && (
+                        <Alert severity="error" onClose={() => setLoginStatus(null)} sx={{ mt: '20px' }}>
+                            <AlertTitle>Error</AlertTitle>
+                            {errorMessage}
+                        </Alert>
+                    )}
                 </Box>
             </Box>
         </Box>

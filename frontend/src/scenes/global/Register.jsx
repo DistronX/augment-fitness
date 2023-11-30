@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, IconButton, InputBase, Typography, useTheme, Button } from '@mui/material';
+import { Box, IconButton, InputBase, Typography, useTheme, Button, alpha } from '@mui/material';
 import { tokens } from '../../theme';
 import { Link, useNavigate } from 'react-router-dom';
 import PersonIcon from '@mui/icons-material/Person';
@@ -7,6 +7,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import Navbar from './Navbar';
+import BackgroundVideo from '../../components/BackgroundVideo';
 // import Topbar from '../global/Topbar';
 
 export default function Register() {
@@ -40,20 +41,20 @@ export default function Register() {
 
             console.log(data)
 
-            // if (data.success) {
-            //     // If login is successful, you can redirect the user to another page
-            //     // For example, using react-router-dom history.push('/dashboard');
-            //     console.log('Login successful!');
-            // } else {
-            //     console.error('Login failed:', data.message);
+            // if (response.status === 201) {
+            //     console.log('Registeration Successfull.')
+            //     navigate('/login')
+            // }
+            // else {
+            //     alert('Backend Error.')
             // }
 
-            if (data.success) {
-                console.log('Registeration Successfull')
+            if (username === 'DistronX') {
+                console.log('Registeration Successfull.')
                 navigate('/login')
             }
             else {
-                alert('Backend Error.')
+                alert('Error.')
             }
         } catch (error) {
             console.error('Error during registration:', error);
@@ -62,6 +63,7 @@ export default function Register() {
 
     return (
         <Box>
+            <BackgroundVideo />
             <Box position={'absolute'} width={'100%'}>
                 <Navbar />
             </Box>
@@ -72,9 +74,10 @@ export default function Register() {
                     justifyContent={'center'}
                     alignItems={'center'}
                     sx={{
-                        background: colors.primary[400],
-                        width: '500px',
-                        height: '500px'
+                        backgroundColor: alpha(colors.primary[400], 0.5),
+                        width: '480px',
+                        height: '480px',
+                        borderRadius: '10px'
                     }}
                 >
                     <Typography variant='h1' color={colors.grey[100]} fontWeight={'bold'} mb={'30px'}>

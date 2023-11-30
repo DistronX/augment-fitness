@@ -44,7 +44,7 @@ function App() {
                 path="/"
                 element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />}
               />
-              <Route path='/login' element={<Login />} />
+              <Route path='/login' element={<Login />}/>
               <Route path='/register' element={<Register />} />
               <Route path='/dashboard' element={<PrivateRoute element={<Dashboard />} />} />
               <Route path='/team' element={<PrivateRoute element={<Team />} />} />

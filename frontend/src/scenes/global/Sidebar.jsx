@@ -16,6 +16,7 @@ import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import PieChartOutlineOutlinedIcon from '@mui/icons-material/PieChartOutlineOutlined';
 import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
+import { useAuth } from "../../AuthContext";
 
 
 function Item({ title, to, icon, selected, setSelected }) {
@@ -41,6 +42,8 @@ export default function Sidebar() {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState('Dashboard');
+
+  const { userData } = useAuth();
   
   return (
     <Box
@@ -107,9 +110,9 @@ export default function Sidebar() {
                     color={colors.grey[100]}
                     sx={{m: '10px 0 0 0'}}
                   >
-                    Ambuj Gupta
+                    {userData ? userData.user.name : 'null'}
                   </Typography>
-                  <Typography variant='h5' color={colors.greenAccent[500]}>
+                  <Typography variant='h5' color={colors.greenAccent[400]}>
                     Member
                   </Typography>
                 </Box>

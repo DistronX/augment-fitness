@@ -1,18 +1,18 @@
 import React from 'react'
-import { Box, Button, IconButton, Typography, useTheme } from '@mui/material';
-import { useContext } from 'react';
-import { ColorModeContext, tokens } from '../../theme';
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
-import { useAuth } from '../../AuthContext';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Box, Button, Typography, useTheme } from '@mui/material';
+// import { useContext } from 'react';
+import { tokens } from '../../theme';
+// import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+// import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+// import { useAuth } from '../../AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const colorMode = useContext(ColorModeContext);
+    // const colorMode = useContext(ColorModeContext);
 
-    const { logout } = useAuth()
+    // const { logout } = useAuth()
 
     const navigate = useNavigate();
 
@@ -25,14 +25,14 @@ export default function Navbar() {
             </Box>
 
             <Box display='flex'>
-                <IconButton onClick={colorMode.toggleColorMode}>
+                {/* <IconButton onClick={colorMode.toggleColorMode}>
                     {theme.palette.mode === 'dark' ? (
                         <LightModeOutlinedIcon />
                     ) : (
                         <DarkModeOutlinedIcon />
                     )
                     }
-                </IconButton>
+                </IconButton> */}
                 <Button variant="outlined" sx={{color: colors.primary[100], borderColor: colors.primary[100], ml: '5px'}} onClick={() => navigate('/register')}>
                     Register
                 </Button> 
