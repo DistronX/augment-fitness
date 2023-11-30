@@ -3,9 +3,12 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const itemRoutes = require("./routes/itemRoutes");
 const userRoutes = require("./routes/userRoutes");
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/augment_fitness", {
