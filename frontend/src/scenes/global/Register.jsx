@@ -1,19 +1,65 @@
-import React, { useContext } from 'react'
+import React, { useState } from 'react'
 import { Box, IconButton, InputBase, Typography, useTheme, Button } from '@mui/material';
-import { ColorModeContext, tokens } from '../../theme';
-import { Link } from 'react-router-dom';
+import { tokens } from '../../theme';
+import { Link, useNavigate } from 'react-router-dom';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import Navbar from './Navbar';
 // import Topbar from '../global/Topbar';
 
 export default function Register() {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode)
-    const colorMode = useContext(ColorModeContext);
+    const navigate = useNavigate();
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+
+    const handleRegister = async () => {
+        const registerDTO = {
+            'name': username, 
+            'email': email, 
+            'password': password,
+            'phone_number': phoneNumber
+        }
+        try {
+            const response = await fetch('http://localhost:3001/signup', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(registerDTO)
+            });
+
+            const data = await response.json();
+
+            console.log(data)
+
+            // if (data.success) {
+            //     // If login is successful, you can redirect the user to another page
+            //     // For example, using react-router-dom history.push('/dashboard');
+            //     console.log('Login successful!');
+            // } else {
+            //     console.error('Login failed:', data.message);
+            // }
+
+            if (data.success) {
+                console.log('Registeration Successfull')
+                navigate('/login')
+            }
+            else {
+                alert('Backend Error.')
+            }
+        } catch (error) {
+            console.error('Error during registration:', error);
+        }
+    };
+
     return (
         <Box>
             <Box position={'absolute'} width={'100%'}>
@@ -45,7 +91,12 @@ export default function Register() {
                         <IconButton type='button' sx={{ p: 1 }}>
                             <PersonIcon />
                         </IconButton>
-                        <InputBase sx={{ ml: 2, flex: 1 }} placeholder='Username' />
+                        <InputBase 
+                            sx={{ ml: 2, flex: 1 }} 
+                            placeholder='Username' 
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
                     </Box>
                     <Box
                         display='flex'
@@ -58,8 +109,34 @@ export default function Register() {
                         <IconButton type='button' sx={{ p: 1 }}>
                             <LockIcon />
                         </IconButton>
-                        <InputBase sx={{ ml: 2, flex: 1 }} placeholder='Password' type='password' />
+                        <InputBase 
+                            sx={{ ml: 2, flex: 1 }} 
+                            placeholder='Password' 
+                            value={password}
+                            type='password'
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
                     </Box>
+                    <Box
+                        display='flex'
+                        backgroundColor={colors.primary[400]}
+                        borderRadius='3px'
+                        border={`1px solid ${colors.primary[300]}`}
+                        width={'300px'}
+                        mb={'20px'}
+                    >
+                        <IconButton type='button' sx={{ p: 1 }}>
+                            <EmailIcon />
+                        </IconButton>
+                        <InputBase 
+                            sx={{ ml: 2, flex: 1 }} 
+                            placeholder='Email' 
+                            value={email}
+                            type='email'
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </Box>
+
                     <Box
                         display='flex'
                         backgroundColor={colors.primary[400]}
@@ -69,9 +146,15 @@ export default function Register() {
                         mb={'30px'}
                     >
                         <IconButton type='button' sx={{ p: 1 }}>
-                            <EmailIcon />
+                            <LocalPhoneIcon />
                         </IconButton>
-                        <InputBase sx={{ ml: 2, flex: 1 }} placeholder='Email' type='email' />
+                        <InputBase 
+                            sx={{ ml: 2, flex: 1 }} 
+                            placeholder='Phone' 
+                            value={phoneNumber}
+                            type='phone'
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
                     </Box>
 
                     <Link to={'/login'}>
@@ -84,6 +167,7 @@ export default function Register() {
                         variant="contained"
                         style={{ width: '300px' }}
                         color='secondary'
+                        onClick={handleRegister}
                     >
                         Register
                     </Button>

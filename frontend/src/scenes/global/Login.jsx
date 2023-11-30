@@ -1,12 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { Box, IconButton, InputBase, Typography, useTheme, Button } from '@mui/material';
-import { ColorModeContext, tokens } from '../../theme';
+import { tokens } from '../../theme';
 import { Link, useNavigate } from 'react-router-dom';
 import PersonIcon from '@mui/icons-material/Person';
 // import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import { useAuth } from '../../AuthContext';
 import Navbar from '../global/Navbar'
 // import Topbar from '../global/Topbar';
@@ -14,9 +12,9 @@ import Navbar from '../global/Navbar'
 export default function Login() {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode)
-    const colorMode = useContext(ColorModeContext);
+    // const colorMode = useContext(ColorModeContext);
 
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const { login } = useAuth();
@@ -24,15 +22,18 @@ export default function Login() {
 
     const handleLogin = async () => {
         try {
-            // const response = await fetch('http://localhost:5000/login', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ username, password }),
-            // });
+            const response = await fetch('http://localhost:3001/login', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
 
-            // const data = await response.json();
+            const data = await response.json();
+
+            console.log(data)
 
             // if (data.success) {
             //     // If login is successful, you can redirect the user to another page
@@ -42,13 +43,13 @@ export default function Login() {
             //     console.error('Login failed:', data.message);
             // }
 
-            if (username === 'admin' && password === 'password') {
+            if (email === 'admin' && password === 'password') {
                 console.log('Login Successfull')
                 login('this-is-a-test-token')
                 navigate('/dashboard')
             }
             else {
-                alert('Incorrect username or password.')
+                alert('Incorrect email or password.')
             }
         } catch (error) {
             console.error('Error during login:', error);
@@ -89,9 +90,10 @@ export default function Login() {
                         </IconButton>
                         <InputBase
                             sx={{ ml: 2, flex: 1 }}
-                            placeholder='Username'
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder='Email'
+                            value={email}
+                            type='email'
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </Box>
                     <Box
