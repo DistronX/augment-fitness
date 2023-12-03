@@ -16,6 +16,7 @@ import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import PieChartOutlineOutlinedIcon from '@mui/icons-material/PieChartOutlineOutlined';
 import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import { useAuth } from "../../AuthContext";
 
 
@@ -161,12 +162,12 @@ export default function Sidebar() {
                 color={colors.grey[300]}
                 sx={{ m: "15px 0 5px 20px" }}
               >
-                Pages
+                Workouts
               </Typography>
               <Item
-                title="Profile Form"
+                title="Add Workout"
                 to="/form"
-                icon={<PersonOutlinedIcon />}
+                icon={<AddCircleOutlineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />

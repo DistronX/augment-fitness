@@ -28,7 +28,7 @@ export default function Register() {
             'phone_number': phoneNumber
         }
         try {
-            const response = await fetch('http://localhost:3001/signup', {
+            const response = await fetch('http://localhost:3001/user/signup', {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -41,21 +41,21 @@ export default function Register() {
 
             console.log(data)
 
-            // if (response.status === 201) {
-            //     console.log('Registeration Successfull.')
-            //     navigate('/login')
-            // }
-            // else {
-            //     alert('Backend Error.')
-            // }
-
-            if (username === 'DistronX') {
+            if (response.status === 201) {
                 console.log('Registeration Successfull.')
                 navigate('/login')
             }
             else {
-                alert('Error.')
+                alert('Backend Error.')
             }
+
+            // if (username === 'DistronX') {
+            //     console.log('Registeration Successfull.')
+            //     navigate('/login')
+            // }
+            // else {
+            //     alert('Error.')
+            // }
         } catch (error) {
             console.error('Error during registration:', error);
         }
